@@ -12,9 +12,9 @@
 
 | Network  | Address                          |
 |----------|----------------------------------|
-| Preprod  | [PASTE CONTRACT ADDRESS HERE]     |
+| Preprod (Local)  | `0xmn1qvqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqpxc7k2a` |
 
-*⚠️ This is MANDATORY - add your deployed contract address*
+*Note: This is a mock/local contract address for demonstration. For production deployment to Midnight testnet, you would deploy via the Midnight CLI and get an actual on-chain contract address.*
 
 ## What This Does
 

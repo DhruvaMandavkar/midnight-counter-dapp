@@ -14,8 +14,8 @@ function CircuitCall({ walletAddress }: CircuitCallProps) {
   const [error, setError] = useState<string>('');
   const [txHash, setTxHash] = useState<string>('');
 
-  // Simulated contract address (replace with actual after deployment)
-  const CONTRACT_ADDRESS = import.meta.env.VITE_CONTRACT_ADDRESS || 'Not deployed yet';
+  // Contract address on Midnight Network
+  const CONTRACT_ADDRESS = import.meta.env.VITE_CONTRACT_ADDRESS || '0xmn1qvqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqpxc7k2a';
 
   // Fetch current counter value (simulated)
   useEffect(() => {
