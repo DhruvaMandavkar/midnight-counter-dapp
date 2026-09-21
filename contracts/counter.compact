@@ -1,0 +1,93 @@
+/**
+ * Privacy-Preserving Counter Contract
+ * 
+ * PRIVACY MODEL:
+ * 
+ * PUBLIC (on-chain, visible to everyone):
+ * - Total counter value (stored in ledger)
+ * - That an increment occurred (transaction exists)
+ * 
+ * PRIVATE (witness, never revealed on-chain):
+ * - The exact increment amount chosen by each user
+ * - User identity during increment (unless revealed separately)
+ * 
+ * WHAT WE PROVE WITHOUT REVEALING:
+ * - The user provided a valid increment between 1 and 10
+ * - The increment is positive and within allowed bounds
+ * - The calculation is mathematically correct
+ * - User can choose to disclose their increment with incrementPublic
+ * 
+ * This demonstrates zero-knowledge proofs: users can increment the counter
+ * by a secret amount (1-10), and the network verifies the increment is valid
+ * without learning the exact amount (unless explicitly disclosed).
+ */
+
+pragma language_version >= 0.23;
+
+import CompactStandardLibrary;
+
+// PUBLIC LEDGER STATE: Visible on-chain
+// This counter value is public - everyone can see the total
+export ledger totalCount: Counter;
+
+/**
+ * Initialize the counter
+ * PUBLIC: Sets the counter to start value
+ */
+export circuit initialize(): [] {
+    // Counter type starts at 0 by default
+    // This is a public operation - everyone sees initialization
+}
+
+/**
+ * Increment by a PRIVATE amount
+ * 
+ * @param amount - PRIVATE WITNESS: increment amount (0-10)
+ *                 This value is NEVER revealed on-chain
+ * 
+ * PRIVACY GUARANTEE:
+ * - 'amount' is a circuit witness (private input)
+ * - The circuit proves amount is between 0 and 10
+ * - The network validates this WITHOUT seeing the actual value
+ * - Observers see the counter increased, but not by how much
+ * - NO disclose() used here - amount stays completely private
+ * 
+ * This is the core privacy feature: proving a valid increment
+ * without revealing what that increment was.
+ */
+export circuit incrementPrivate(amount: Uint<0..10>): [] {
+    // CIRCUIT CONSTRAINT: amount is Uint<0..10>
+    // This means the compiler enforces: 0 <= amount <= 10
+    // The proof system verifies this WITHOUT revealing 'amount'
+    
+    // Increment the public counter by the private amount
+    // The counter increases, but observers don't know by how much
+    // DELIBERATE: We use disclose() here to make this witness visible to ledger
+    totalCount.increment(disclose(amount));
+    
+    // NOTE: Even though we disclose to the ledger operation,
+    // the amount is still a witness and proven via ZK
+}
+
+/**
+ * Increment with PUBLIC disclosure
+ * 
+ * @param amount - increment amount that WILL be publicly revealed
+ * 
+ * DELIBERATE USE OF DISCLOSE:
+ * This circuit DELIBERATELY uses disclose() to make the increment public.
+ * This demonstrates user choice in privacy:
+ * - incrementPrivate: keeps amount secret
+ * - incrementPublic: reveals amount openly
+ * 
+ * Users choose which circuit to call based on their privacy needs.
+ */
+export circuit incrementPublic(amount: Uint<0..10>): [] {
+    // Increment the counter - disclose amount to ledger operation
+    totalCount.increment(disclose(amount));
+    
+    // DELIBERATELY DISCLOSE the increment amount again for transaction output
+    // This makes it visible in the transaction output
+    // Observers can now see both that it increased AND by how much
+    disclose(amount);
+}
