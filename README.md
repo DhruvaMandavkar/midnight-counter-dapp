@@ -6,7 +6,7 @@
 
 ## Live Demo
 
-🚀 **[View Live Demo](https://your-app.vercel.app)** ← Add your Vercel URL here after deployment
+🚀 **[View Live Demo](https://midnight-counter-dapp.vercel.app)**
 
 ## Contract Address
 
