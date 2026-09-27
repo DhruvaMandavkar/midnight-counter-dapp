@@ -8,6 +8,8 @@
 
 🚀 **[View Live Demo](https://midnight-counter-dapp.vercel.app)**
 
+> **Note**: The live demo uses simulated proof generation and transactions for demonstration purposes. For real Midnight Network integration, you need to run the local development environment with proof server, indexer, and node as described in the Setup section below.
+
 ## Contract Address
 
 | Network  | Address                          |
@@ -71,6 +73,32 @@ Think of it as a group vote counter where participants can contribute points sec
 - **Testing**: Jest with TypeScript
 - **CI/CD**: GitHub Actions
 - **Deployment**: Vercel
+
+## Implementation Status
+
+### ✅ Completed
+- **Smart Contract**: Full Compact contract with `incrementPrivate` and `incrementPublic` circuits
+- **Contract Compilation**: Successfully compiled with Midnight compiler v0.5.2
+- **Frontend UI**: Complete React application with wallet integration
+- **Privacy Controls**: Mode toggle for private/public increments
+- **Testing**: 15+ comprehensive test cases
+- **CI/CD**: Automated GitHub Actions pipeline
+- **Documentation**: Comprehensive guides and setup instructions
+- **Deployment**: Live demo on Vercel
+
+### 🚧 Integration Notes
+The live demo uses **simulated proof generation** and transactions for demonstration purposes because:
+- Actual Midnight Network requires a running local development environment (proof server, indexer, node)
+- Browser-based wallet integration (Lace) requires the Midnight Network to be accessible
+- For production, you would connect to Midnight testnet or mainnet nodes
+
+**To use real Midnight.js integration**:
+1. Run the proof server: `docker run -d -p 6300:6300 midnightnetwork/proof-server`
+2. Start the indexer and node (see Midnight documentation)
+3. Update the environment variables with actual endpoints
+4. The frontend code includes Midnight SDK imports and is ready for integration
+
+The **contract compilation works** and generates valid ZK circuits. The **UI demonstrates** how the privacy-preserving interface would work with real transactions.
 
 ## Prerequisites
 
