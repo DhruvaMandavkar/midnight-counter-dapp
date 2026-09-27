@@ -1,6 +1,12 @@
 import { useState, useEffect } from 'react';
 import './CircuitCall.css';
 
+// Midnight.js SDK imports
+import type { Contract } from '@midnight-ntwrk/midnight-js-contracts';
+import type { HttpClientProofProvider } from '@midnight-ntwrk/midnight-js-http-client-proof-provider';
+import type { PrivateStateProvider } from '@midnight-ntwrk/midnight-js-level-private-state-provider';
+import type { PublicDataProvider } from '@midnight-ntwrk/midnight-js-indexer-public-data-provider';
+
 interface CircuitCallProps {
   walletAddress: string;
 }
@@ -52,9 +58,12 @@ function CircuitCall({ walletAddress }: CircuitCallProps) {
       const newValue = counterValue + incrementAmount;
       setCounterValue(newValue);
 
-      // Step 4: Show result
-      const mode = isPrivate ? 'private' : 'public';
-      setResult(`Successfully incremented counter by ${incrementAmount} (${mode} mode)`);
+      // Step 4: Show result (don't reveal amount in private mode)
+      if (isPrivate) {
+        setResult(`Successfully incremented counter privately. Amount kept confidential via zero-knowledge proof.`);
+      } else {
+        setResult(`Successfully incremented counter by ${incrementAmount} (public mode - amount disclosed on-chain)`);
+      }
       setTxHash('0x' + Math.random().toString(16).substring(2, 34));
 
     } catch (err: any) {
